@@ -702,12 +702,12 @@ Life/用餐+Life/家务,0.02,0.0
 Life/Air,12.20,1.6
 Life/用餐+Life/交通,0.02,0.0
 Chaos,136.90,17.8
-Works ,126.60,16.5
-Works /交流,52.32,6.8
-Works /OBP,9.00,1.2
-Works /Pt0,40.90,5.3
-Works /GDG,24.35,3.2
-Works /Pt0+Works /交流,0.03,0.0
+Output,126.60,16.5
+Output/交流,52.32,6.8
+Output/OBP,9.00,1.2
+Output/Pt0,40.90,5.3
+Output/GDG,24.35,3.2
+Output/Pt0+Output/交流,0.03,0.0
 Input,28.02,3.6
 Input/学习,27.20,3.5
 Input/阅读,0.82,0.1

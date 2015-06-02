@@ -682,12 +682,12 @@ Livin/睡眠,214.17,27.9
 Livin/电影,12.05,1.6
 Livin/娱乐,0.93,0.1
 Livin/购物,3.83,0.5
-Works ,207.98,27.1
-Works /交流,82.02,10.7
-Works /工作,29.10,3.8
-Works /GDG,54.72,7.1
-Works /OBP,13.83,1.8
-Works /Pt0,28.32,3.7
+Output,207.98,27.1
+Output/交流,82.02,10.7
+Output/工作,29.10,3.8
+Output/GDG,54.72,7.1
+Output/OBP,13.83,1.8
+Output/Pt0,28.32,3.7
 Life,193.00,25.1
 Life/家务,51.38,6.7
 Life/交通,73.83,9.6
@@ -699,13 +699,13 @@ Input,24.62,3.2
 Input/阅读,2.30,0.3
 Input/学习,18.38,2.4
 Input/上网,3.93,0.5
-Chaos+Works ,0.07,0.0
-Chaos+Works /交流,0.03,0.0
-Works /GDG+Chaos,0.03,0.0
-Works +Livin,0.03,0.0
-Works /GDG+Livin/睡眠,0.03,0.0
-Works +Life,0.03,0.0
-Works /Pt0+Life/交通,0.02,0.0
-Life/用餐+Works /交流,0.02,0.0
+Chaos+Output,0.07,0.0
+Chaos+Output/交流,0.03,0.0
+Output/GDG+Chaos,0.03,0.0
+Output+Livin,0.03,0.0
+Output/GDG+Livin/睡眠,0.03,0.0
+Output+Life,0.03,0.0
+Output/Pt0+Life/交通,0.02,0.0
+Life/用餐+Output/交流,0.02,0.0
 其他,0.07,0.0
 总计,768.00

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''check and clean and export as .csv
-
+- 150602 pike aTimeLogger2 date into .csv
 - 150601 make handlog export all date into *_all.csv
 - 150525 make handlog wxport 2types files
 '''
@@ -113,15 +113,48 @@ def chk_all_log(aim_path):
         f_exp = _titles[0]+"\n"+f_exp
         open("./data/zq_all.csv" ,'w').write(f_exp)
         open("./data/pom_all.csv",'w').write(f_pom)
+    
     elif "csv" == _spath[-1]:
+        t_titles = ["date"]
+        f_exp = {}
+        '''{'date':['key1',var1]}
+        ''' 
         for file in os.listdir('./csv'):
             if fnmatch.fnmatch(file, '*.csv'):
                 fpath = './csv/%s' % file
                 print fpath
                 fl = open(fpath).readlines()
-                _load_atl(fl,file)
-
-            #print _exp,_pom
+                date,logs = _load_atl(fl,file)
+                f_exp[date] = []
+                for l in logs.split("\n")[1:]:
+                    _log = l.split(',')
+                    if 1==len(_log):
+                        pass
+                    else:
+                        f_exp[date].append((_log[0],_log[1]))
+                        if _log[0] in t_titles:
+                            pass
+                        else:
+                            t_titles.append(_log[0])
+                        #crt_log.append(_log[1])
+                #f_exp += date+",".join()
+                #print crt_log
+        k_exp = f_exp.keys()
+        k_exp.sort()
+        #print k_exp
+        exp_all = []
+        for k in k_exp:
+            #print f_exp[k]
+            crt_line = []
+            for i in t_titles:
+                for v in f_exp[k]:
+                    if i == v[0]:
+                        print i, v[1]
+                        crt_line.append(v[1])
+            exp_all.append(crt_line)
+        print t_titles
+        for m in exp_all:
+            print m
     print "*_all export..."
     #print "t_titles:", t_titles
     #print "p_titles:", p_titles
@@ -158,7 +191,7 @@ def _load_atl(flines,fname):
     f_exp = _titles+_exp
     _expf = fname.split("_")[1]
     open("./data/atl2_%s.csv"% _expf,'w').write(f_exp)
-    #return _titles,_exp,""
+    return _expf,_exp
 
 def _reformat_log(log):
     '''reformt log
@@ -168,7 +201,7 @@ def _reformat_log(log):
     act_map = {'Chaos':['Chaos',]
         , 'Life':['Life','运动','交通','Air','用餐','家务']
         , 'Input':['Input','阅读','学习','上网']
-        , 'Output':['Output','交流','工作','GDG','OBP','Pt0']
+        , 'Output':['Works','交流','工作','GDG','OBP','Pt0']
         , 'Livin':['Livin','睡眠','购物','就医','Ukulele','电影','娱乐']
         , 'Untracked':['其他','Untracked']
         }

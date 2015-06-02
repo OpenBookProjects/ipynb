@@ -517,22 +517,22 @@ Life/交通,66.47,8.7
 Life/家务,52.07,6.8
 Life/运动,0.22,0.0
 Life/Air,7.38,1.0
-Works ,156.63,20.4
-Works /OBP,21.90,2.9
-Works /GDG,56.25,7.3
-Works /交流,48.68,6.3
-Works /工作,23.77,3.1
-Works /Pt0,6.03,0.8
+Output,156.63,20.4
+Output/OBP,21.90,2.9
+Output/GDG,56.25,7.3
+Output/交流,48.68,6.3
+Output/工作,23.77,3.1
+Output/Pt0,6.03,0.8
 Chaos,94.95,12.4
 Input,21.03,2.7
 Input/学习,5.05,0.7
 Input/阅读,7.08,0.9
 Input/上网,8.90,1.2
-Chaos+Works ,0.03,0.0
-Chaos+Works /交流,0.03,0.0
+Chaos+Output,0.03,0.0
+Chaos+Output/交流,0.03,0.0
 Life+Livin,0.02,0.0
 Life/用餐+Livin/睡眠,0.02,0.0
-Life+Works ,0.02,0.0
-Life/交通+Works /交流,0.02,0.0
+Life+Output,0.02,0.0
+Life/交通+Output/交流,0.02,0.0
 其他,137.97,18.0
 总计,768.00

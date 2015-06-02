@@ -519,28 +519,28 @@ Life/用餐,44.75,6.4
 Life/Air,7.77,1.1
 Life/运动,3.98,0.6
 Life/家务+Life/用餐,0.12,0.0
-Works ,112.42,16.2
-Works /GDG,24.37,3.5
-Works /Pt0,26.02,3.7
-Works /交流,36.75,5.3
-Works /工作,20.32,2.9
-Works /OBP,4.93,0.7
-Works /交流+Works /工作,0.03,0.0
+Output,112.42,16.2
+Output/GDG,24.37,3.5
+Output/Pt0,26.02,3.7
+Output/交流,36.75,5.3
+Output/工作,20.32,2.9
+Output/OBP,4.93,0.7
+Output/交流+Output/工作,0.03,0.0
 Chaos,97.85,14.1
 Input,22.18,3.2
 Input/学习,11.60,1.7
 Input/阅读,8.83,1.3
 Input/上网,1.75,0.3
-Chaos+Works ,0.35,0.1
-Chaos+Works /交流,0.33,0.0
-Works /GDG+Chaos,0.02,0.0
+Chaos+Output,0.35,0.1
+Chaos+Output/交流,0.33,0.0
+Output/GDG+Chaos,0.02,0.0
 Livin+Life,0.15,0.0
 Livin/睡眠+Life/家务,0.03,0.0
 Livin/就医+Life/交通,0.10,0.0
 Livin/睡眠+Life/交通,0.02,0.0
 Input+Life,0.02,0.0
 Life/家务+Input/学习,0.02,0.0
-Works +Life,0.02,0.0
-Works /Pt0+Life/用餐,0.02,0.0
+Output+Life,0.02,0.0
+Output/Pt0+Life/用餐,0.02,0.0
 其他,0.23,0.0
 总计,696.00
