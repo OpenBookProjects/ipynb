@@ -129,29 +129,81 @@ def chk_all_log(aim_path):
 def _load_atl(flines,fname):
     """load and pick time log from aTimeLogger2 export
     """
-    act_map = {'Chaos':['Chaos',]
-        , 'Life':['Life','睡眠','家务','交通','用餐','购物','Air','运动']
-        , 'Input':['Input','阅读','学习','上网']
-        , 'Output':['Output','交流','工作','GDG','OBP','Pt0']
-        , 'Livin':['Livin','电影','娱乐','睡眠','购物','就医','Ukulele']
-        , 'Untracked':['其他','Untracked']
-        }
-    _titles = ""#flines[0]
+    _titles = ""
     _exp = ""
     _gotit = 0
+    no_grp = 0
+    l_exp = []
+
     for l in flines:
+        if ("%" in l):
+            no_grp = 1
         if ("Percent" in l)or("%" in l):
             _gotit = 1
         if _gotit:
             if "+" in l:
                 pass
+            elif "/" in l:
+                pass
             else:
                 _exp += l
+                l_exp.append(l)
+    if no_grp:
+        _exp = "活动类别,持续时间,Percent\n"
+        _total,grp_act = _reformat_log(l_exp)
+        for k in grp_act:
+            _exp += "%s,"%k + ",".join(grp_act[k]) + "\n"
+        _exp += "总计,%.2f"% _total
 
     f_exp = _titles+_exp
     _expf = fname.split("_")[1]
     open("./data/atl2_%s.csv"% _expf,'w').write(f_exp)
     #return _titles,_exp,""
+
+def _reformat_log(log):
+    '''reformt log
+    - clean ""
+    - merge no grp. logs
+    '''
+    act_map = {'Chaos':['Chaos',]
+        , 'Life':['Life','运动','交通','Air','用餐','家务']
+        , 'Input':['Input','阅读','学习','上网']
+        , 'Output':['Output','交流','工作','GDG','OBP','Pt0']
+        , 'Livin':['Livin','睡眠','购物','就医','Ukulele','电影','娱乐']
+        , 'Untracked':['其他','Untracked']
+        }
+    grp_act = {}
+    for l in log:
+        #print ",".join([i[1:-1] for i in l[:-1].split(',')])
+        crt_line = [i[1:-1] for i in l[:-1].split(',')]
+        if "%" in crt_line:
+            pass
+        else:
+            #print crt_line[0].split()[0]
+            for k in act_map.keys():
+                if crt_line[0].split()[0] in act_map[k]:
+                    #print k,crt_line[0],crt_line[1:]
+                    if k in grp_act:
+                        grp_act[k].append(crt_line[1:])
+                    else:
+                        grp_act[k] = [crt_line[1:]]
+    
+    _total = 0
+    for k in grp_act:
+        #print k,grp_act[k]
+        k_time = 0
+        k_precent = 0
+        for i in grp_act[k]:
+            _time = i[0].split(':')
+            d_time = int(_time[0])+float(_time[1])/60
+            k_time += d_time
+            _total += d_time
+            k_precent += float(i[1])
+            #print type(d_time)
+        #print k_time, k_precent
+        grp_act[k] = ["%.2f"%k_time, str(k_precent)]
+    #print grp_act
+    return _total,  grp_act
 
 if __name__ == '__main__':
     if 2 != len(sys.argv) :
