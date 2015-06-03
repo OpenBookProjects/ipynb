@@ -8,7 +8,6 @@ import os
 import sys
 import fnmatch
 
-ZDATA=[]
         
 def _load_timeline(flines,fpath):
     _titles = flines[0]
@@ -19,11 +18,6 @@ def _load_timeline(flines,fpath):
             pass
         else:        
             _exp += _format_log_line(l)    
-            #as_year = ["20%s-%s-%s"% (_l[0][:2],_l[0][2:4],_l[0][-2:])]
-            ##print ",".join(as_year+_l[1:])
-            #_exp += ",".join(as_year+_l[1:])
-            #_exp += "\n"
-    #print fpath.split('-')[-1]
     f_exp = _titles+_exp
     open("./data/zq_%s"% fpath.split('-')[-1],'w').write(f_exp)
     return _titles,_exp,""
@@ -41,10 +35,6 @@ def _load_pomodoro(flines,fpath):
     _titles = flines[0].split()
     _pom = ""   # "date,"+_titles[1]+"\n"
     _exp = ""   # _titles[0]+"\n"
-    #print _pom
-    #print _exp
-    #print flines[1:]
-    #return None 
     for l in flines[1:]:
         _l = l[:-1].split()
         #print _l
@@ -60,10 +50,6 @@ def _load_pomodoro(flines,fpath):
                 crt_date = c_l[0][:6]
                 #print crt_date,c_l[1:]
                 _pom += _reformat_csv(crt_date, c_l[1:])
-            #print l.split()
-            #print len(l.split())
-    #print _exp
-    #print _pom
     f_pom = "date,"+_titles[1]+"\n" + _pom
     f_exp = _titles[0]+"\n" + _exp
     open("./data/zq_%s"% fpath.split('-')[-1],'w').write(f_exp)
@@ -83,12 +69,11 @@ def _reformat_csv(crt_date, crt_line):
 
 def chk_all_log(aim_path):
     _spath = aim_path.split('/')
-    t_titles = ""
-    f_pom = "" #"date,"+_titles[1]+"\n"
-    p_titles = ""
-    f_exp = "" #_titles[0]+"\n"
-    
     if "log" == _spath[-1]:
+        t_titles = ""
+        f_pom = "" #"date,"+_titles[1]+"\n"
+        p_titles = ""
+        f_exp = "" #_titles[0]+"\n"
         for file in os.listdir('./log'):
             if fnmatch.fnmatch(file, '*.txt'):
                 #pd.read_csv('./data/%s' % file)
@@ -111,8 +96,8 @@ def chk_all_log(aim_path):
                     #print _exp
         f_pom = "date,"+_titles[1]+"\n"+f_pom
         f_exp = _titles[0]+"\n"+f_exp
-        open("./data/zq_all.csv" ,'w').write(f_exp)
-        open("./data/pom_all.csv",'w').write(f_pom)
+        open("./data/_all_zhandlog.csv" ,'w').write(f_exp)
+        open("./data/_all_pomodoro.csv",'w').write(f_pom)
     
     elif "csv" == _spath[-1]:
         t_titles = ["date"]
@@ -122,9 +107,10 @@ def chk_all_log(aim_path):
         for file in os.listdir('./csv'):
             if fnmatch.fnmatch(file, '*.csv'):
                 fpath = './csv/%s' % file
-                print fpath
+                #print fpath
                 fl = open(fpath).readlines()
                 date,logs = _load_atl(fl,file)
+                #print date
                 f_exp[date] = []
                 for l in logs.split("\n")[1:]:
                     _log = l.split(',')
@@ -136,28 +122,53 @@ def chk_all_log(aim_path):
                             pass
                         else:
                             t_titles.append(_log[0])
-                        #crt_log.append(_log[1])
-                #f_exp += date+",".join()
-                #print crt_log
-        k_exp = f_exp.keys()
-        k_exp.sort()
-        #print k_exp
-        exp_all = []
-        for k in k_exp:
-            #print f_exp[k]
-            crt_line = []
+        k_date = f_exp.keys()
+        k_date.sort()
+        #print k_date
+        exp_all = [] #sort f_exp logs with date
+        for d in k_date:
+            crt_line = {'date':d[:4]} # 130701-130801 ~ 1307
             for i in t_titles:
-                for v in f_exp[k]:
+                #print f_exp[d]
+                for v in f_exp[d]:
                     if i == v[0]:
-                        print i, v[1]
-                        crt_line.append(v[1])
+                        crt_line[i] = v[1]
             exp_all.append(crt_line)
-        print t_titles
-        for m in exp_all:
-            print m
+        #print t_titles
+        #print exp_all[0]
+        exp_lines = []
+        for l in exp_all:
+            crt_l = []
+            for k in t_titles:
+                if k in l:
+                    if "-" in l[k]:
+                        crt_l.append(l[k])
+                    else:
+                        if "\r" in l[k]:
+                            #print l[k]
+                            crt_l.append(l[k][:-1])
+                        else:
+                            crt_l.append(l[k])
+                else:
+                    crt_l.append("0.0")
+            exp_lines.append(crt_l)
+        #print exp_lines
+        re_titles = []
+        for _t in t_titles:
+            if "总计" == _t:
+                re_titles.append("Total") 
+            elif "其他" == _t:
+                re_titles.append("Others") 
+            else:
+                re_titles.append(_t) 
+        _exp_all = ",".join(re_titles)+"\n"
+        #print _exp_all
+        for i in exp_lines:
+            _exp_all += ",".join([str(j) for j in i])+"\n"
+        #_exp_all += "\n".join([",".join([str(j) for j in i for i in exp_lines])])
+        open("./data/_all_atlogger2.csv",'w').write(_exp_all)
+
     print "*_all export..."
-    #print "t_titles:", t_titles
-    #print "p_titles:", p_titles
 
 def _load_atl(flines,fname):
     """load and pick time log from aTimeLogger2 export
@@ -182,7 +193,7 @@ def _load_atl(flines,fname):
                 _exp += l
                 l_exp.append(l)
     if no_grp:
-        _exp = "活动类别,持续时间,Percent\n"
+        _exp = "Class,Duration,Percent\n"
         _total,grp_act = _reformat_log(l_exp)
         for k in grp_act:
             _exp += "%s,"%k + ",".join(grp_act[k]) + "\n"
@@ -237,6 +248,7 @@ def _reformat_log(log):
         grp_act[k] = ["%.2f"%k_time, str(k_precent)]
     #print grp_act
     return _total,  grp_act
+
 
 if __name__ == '__main__':
     if 2 != len(sys.argv) :
